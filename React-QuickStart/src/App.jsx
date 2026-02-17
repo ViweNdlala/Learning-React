@@ -1,5 +1,9 @@
 import './App.css';
-
+/**
+ * Hooks: functions starting with 'use' e.g useState
+ * useState: Allow component to remember information, with current state and function
+ *  which lets you toupdate current state */
+import {useState } from 'react'; 
 
 /**
  * The React component to return a button
@@ -65,6 +69,63 @@ function ShoppingList() {
 }
 
 /**
+ * Section: Updating the screen & Responding to events, where the button counts are addeded
+ */
+function Button1() {
+  const [count, setCount] = useState(0);    // useState needs to be imported
+
+  function handleClick(){
+    setCount(count + 1);
+  }
+
+  return(
+    <button onClick={handleClick}>
+      Clicked {count} times
+    </button>
+  );
+}
+
+function ButtonCounts(){
+  return(
+    <div>
+      <h1>Counters that update separately</h1>
+      <Button1 />
+      <Button1 />
+      <hr />
+    </div>
+  );
+}
+
+/**
+ * Section: Using Hooks, sharing data between components
+ */
+
+function ButtonCounts1(){
+  const [count, setCount] = useState(0);
+
+  function handleClick(){
+    setCount(count +1);
+  }
+  return(
+    <div>
+      <h1>Counters that updte together</h1>
+      <Button2 count={count} onClick={handleClick}/>
+      <Button2 count={count} onClick={handleClick}/>
+      <hr/>
+    </div>
+  );
+}
+
+// Props for count and handle event passed from parent
+function Button2({count, onClick}){
+  return(
+    <button onClick={onClick}>
+      Clicked {count} times
+    </button>
+  );
+}
+
+/**
  * export default: keywords to specify the main component in the file
  * @returns Main component in the file
  */
@@ -77,13 +138,21 @@ export default function MyApp(){
             <h1>Welcome to my app</h1>
             <MyButton/>
         </div>
+        <hr />
 
-        {/* Section:Display data */}
+        {/* Component:Display data */}
         <Profile/>
+        <hr />
 
-        {/* Section: Shopping list */}
+        {/* Component: Shopping list */}
         <ShoppingList/>
-        
+        <hr />
+
+        {/* Component: ButtonCounts */}
+        <ButtonCounts />
+
+        {/* Component: ButtonCounts1 */}
+        <ButtonCounts1 />
       </>
-    );
-}
+    );  
+}  
