@@ -11,11 +11,13 @@ const PRODUCTS = [
 
 
 function ProductCategoryRow({category}){
-    <th>
-        <tr colSpan="2">
-            {category}
+    return(
+        <tr>
+            <th colSpan="2">
+                {category}
+            </th>
         </tr>
-    </th>
+    );
 }
 
 function ProductRow({product}){
@@ -36,11 +38,11 @@ function ProductTable({products, filterText, inStockOnly}){
     let lastCategory = null;
 
     products.forEach((product) => {
-        if(product.name.toLowerCase().indexOf(filterText.toLowerCase) === -1){
+        if(product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1){
             return;
         }
 
-        if(inStockOnly && !product.category){
+        if(inStockOnly && !product.stocked){
             return;
         }
 
@@ -72,17 +74,21 @@ function ProductTable({products, filterText, inStockOnly}){
     );
 }
 
-function SearchBar({filterText, inStockOnly}){
+function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange}){
     return(
         <form>
             <input 
                 type="text" 
                 value={filterText}
-                placeholder="Search..." />
+                placeholder="Search..." 
+                onChange={ (e) => onFilterTextChange(e.target.value)}
+            />
             <label>
                 <input 
-                type="checkbox"
-                checked={inStockOnly} />
+                    type="checkbox"
+                    checked={inStockOnly} 
+                    onChange={ (e) => onInStockOnlyChange(e.target.checked)}
+                />
                 {' '}
                 Only show Products in stock
             </label>
@@ -97,11 +103,15 @@ function FilterableProductTable({products}){
         <div>
             <SearchBar 
                 filterText={filterText}
-                inStockOnly={inStockOnly}/>
+                inStockOnly={inStockOnly}
+                onFilterTextChange = {setFilterText}
+                onInStockOnlyChange={setInStockOnly}
+            />
             <ProductTable 
                 products={products}
                 filterText={filterText}
-                inStockOnly={inStockOnly}/>
+                inStockOnly={inStockOnly}
+            />
         </div>
     );
 }
